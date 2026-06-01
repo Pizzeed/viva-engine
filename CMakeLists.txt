@@ -1,0 +1,121 @@
+cmake_minimum_required(VERSION 3.21)
+
+project(
+  viva
+  VERSION 0.0.2
+  DESCRIPTION "Simple OpenGL engine for 3D applications"
+  LANGUAGES CXX)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  CXX_STANDARD 23
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+  EXPORT_COMPILE_COMMANDS ON
+  POSITION_INDEPENDENT_CODE ON
+  INSTALL_RPATH "$ORIGIN;$ORIGIN/..;$ORIGIN/lib"
+  BUILD_WITH_INSTALL_RPATH TRUE
+)
+
+file(CREATE_LINK
+    "${CMAKE_BINARY_DIR}/compile_commands.json"
+    "${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json"
+    SYMBOLIC
+)
+
+find_package(glfw3 REQUIRED)
+find_package(glm REQUIRED)
+find_package(OpenGL REQUIRED)
+
+add_library(${PROJECT_NAME})
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+include_directories( ${OPENGL_INCLUDE_DIRS})
+
+target_include_directories(${PROJECT_NAME}
+PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+  $<INSTALL_INTERFACE:include/>
+PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/bindings/
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/
+)
+
+target_sources(${PROJECT_NAME}
+PUBLIC
+PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/utils/color.cc
+
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/application/application.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/scene/scene.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/object/object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/object/render_object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/mesh/mesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/mesh/objmesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/material/material.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/camera/camera.cc
+  
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/glad/glad.cc
+)
+
+target_link_libraries(${PROJECT_NAME}
+PUBLIC
+  OpenGL::GL
+  glfw
+  glm::glm
+)
+
+if(STANDALONE)
+  message(STATUS "[${PROJECT_NAME}] building test executable for developers")
+  add_subdirectory(standalone)
+endif()
+
+message(
+  STATUS
+    "[${PROJECT_NAME}] installing ${PROJECT_NAME} in namespace ${PROJECT_NAMESPACE}"
+)
+include(GNUInstallDirs)
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
+message(
+  STATUS "[${PROJECT_NAME}] installing in prefix: ${CMAKE_INSTALL_PREFIX}")
+
+set(PROJECT_CONFIG_FILE_IN
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in")
+set(PROJECT_CONFIG_FILE
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake")
+set(CONFIG_TARGETS_FILE "${PROJECT_NAME}-config-targets.cmake")
+set(CONFIG_VERSION_FILE
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake")
+set(INSTALL_EXPORT_DESTINATION_DIR
+    "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+install(
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  INCLUDES
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(
+  DIRECTORY
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/viva>
+    $<INSTALL_INTERFACE:include/viva> ;
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(
+  EXPORT ${PROJECT_NAME}
+  DESTINATION ${INSTALL_EXPORT_DESTINATION_DIR}
+  NAMESPACE ${PROJECT_NAMESPACE}
+  FILE ${CONFIG_TARGETS_FILE})
+configure_package_config_file(
+  ${PROJECT_CONFIG_FILE_IN} ${PROJECT_CONFIG_FILE}
+  INSTALL_DESTINATION ${INSTALL_EXPORT_DESTINATION_DIR})
+write_basic_package_version_file(${CONFIG_VERSION_FILE}
+                                 COMPATIBILITY AnyNewerVersion)
+install(FILES ${PROJECT_CONFIG_FILE} ${CONFIG_VERSION_FILE}
+        DESTINATION ${INSTALL_EXPORT_DESTINATION_DIR})
+
+message(STATUS "[${PROJECT_NAME}] configuring ${PROJECT_NAME} done!")
+
+unset(STANDALONE CACHE)

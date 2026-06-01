@@ -1,0 +1,112 @@
+#include <imgui.h>
+#include <viva/application/application.h>
+#include <viva/glad/glad.h>
+#include <viva/material/material.h>
+#include <viva/mesh/objmesh.h>
+#include <viva/scene/scene.h>
+
+#include <iostream>
+
+// #include "cube.h"
+#include "bindings/imgui_impl_glfw.h"
+#include "bindings/imgui_impl_opengl3.h"
+
+class UI : public viva::RenderObject
+{
+ public:
+  UI(viva::OBJMesh* teapot)
+    : RenderObject()
+    , m_teapot(teapot)
+  {
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(viva::Application::get()->window(), true);
+    ImGui_ImplOpenGL3_Init("#version 420");
+  }
+
+  auto render(viva::Camera const& camera) -> void override
+  {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    auto& io = ImGui::GetIO();
+    ImGui::SetNextWindowSize({io.DisplaySize.x, io.DisplaySize.y});
+    ImGui::SetNextWindowPos({0, 0});
+    ImGui::Begin(
+      "Overlay",
+      nullptr,
+      ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove
+        | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground
+        | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing
+        | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_AlwaysAutoResize
+    );
+    ImGui::SliderFloat("X Angle", &x_angle, 0, 360);
+    ImGui::SliderFloat("Y Angle", &y_angle, 0, 360);
+    ImGui::SliderFloat("Z Angle", &z_angle, 0, 360);
+    ImGui::End();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  }
+
+  auto tick(f32 const delta) -> void override
+  {
+    if(m_teapot) {
+      m_teapot->set_rotation({x_angle, y_angle, z_angle});
+    }
+  }
+
+  auto clone(bool) -> std::shared_ptr<Object> override { return nullptr; }
+
+ public:
+  f32 x_angle = 0.f;
+  f32 y_angle = 0.f;
+  f32 z_angle = 0.f;
+
+ private:
+  viva::OBJMesh* m_teapot = nullptr;
+};
+
+int main()
+
+{
+  auto app = viva::Application::get()->with_width(800)->with_height(600)->with_title("Test");
+  app->init();
+  app->set_current_scene(std::make_shared<viva::Scene>());
+  auto scene = app->current_scene();
+
+  auto material = viva::Material::from_files(
+    std::string(CMAKE_BINARY_DIR) + "/assets/shaders/default_lit/default_lit.vert.glsl",
+    std::string(CMAKE_BINARY_DIR) + "/assets/shaders/default_lit/default_lit.frag.glsl"
+
+  );
+
+  auto teapot = scene->create_object<
+    viva::OBJMesh>(std::string(CMAKE_BINARY_DIR) + "/assets/teapot.obj", &material);
+  // auto cube = scene->create_object<Cube>(&material, 4);
+  auto ui = scene->create_object<UI>(teapot);
+
+  teapot->set_position({0.f, -2.f, -5.f});
+  auto clone = static_pointer_cast<viva::OBJMesh>(teapot->clone(true));
+  clone->set_position({2.f, -2.f, -5.f});
+
+  auto clone2 = static_pointer_cast<viva::OBJMesh>(clone->clone(false));
+  clone2->set_position({3.f, -2.f, -5.f});
+  scene->add_object(clone2);
+
+  auto clone3 = static_pointer_cast<viva::OBJMesh>(clone2->clone(false));
+  clone3->set_position({6.f, -2.f, -5.f});
+
+  scene->add_object(clone3);
+
+  if(not clone->scene() or not clone2->scene() or not clone3->scene())
+    std::cout << "No scene in clones!" << std::endl;
+  scene->destroy_object(clone3.get());
+
+  // cube->set_position({3.f, -2.f, -5.f});
+
+  app->current_scene()->current_camera().set_position(glm::vec3 {0.f, 0.f, 3.f});
+  app->run_graphics_loop();
+  return 0;
+}

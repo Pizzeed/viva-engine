@@ -1,0 +1,28 @@
+#pragma once
+
+#include <viva/material/material.h>
+#include <viva/object/render_object.h>
+#include <viva/utils/types.h>
+
+namespace viva
+{
+  class Mesh : public RenderObject
+  {
+   public:
+    Mesh(Material* material);
+    virtual ~Mesh();
+
+   protected:
+    virtual auto render(Camera const& camera) -> void override;
+
+    Material* m_material;
+    bool is_material_valid = false;
+
+    int m_vertex_count = 0;
+    int m_index_count = 0;
+
+    u32 m_model_loc = 0;
+    u32 m_view_loc = 0;
+    u32 m_proj_loc = 0;
+  };
+}  // namespace viva
