@@ -1,8 +1,8 @@
 #pragma once
 
-#include <viva/utils/types.h>
-
 #include <string>
+
+#include <viva/utils/types.h>
 
 namespace viva
 {

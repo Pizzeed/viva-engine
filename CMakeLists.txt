@@ -6,16 +6,6 @@ project(
   DESCRIPTION "Simple OpenGL engine for 3D applications"
   LANGUAGES CXX)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-  CXX_STANDARD 23
-  CXX_STANDARD_REQUIRED ON
-  CXX_EXTENSIONS OFF
-  EXPORT_COMPILE_COMMANDS ON
-  POSITION_INDEPENDENT_CODE ON
-  INSTALL_RPATH "$ORIGIN;$ORIGIN/..;$ORIGIN/lib"
-  BUILD_WITH_INSTALL_RPATH TRUE
-)
-
 file(CREATE_LINK
     "${CMAKE_BINARY_DIR}/compile_commands.json"
     "${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json"
@@ -28,6 +18,16 @@ find_package(OpenGL REQUIRED)
 
 add_library(${PROJECT_NAME})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  CXX_STANDARD 23
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+  EXPORT_COMPILE_COMMANDS ON
+  POSITION_INDEPENDENT_CODE ON
+  INSTALL_RPATH "$ORIGIN;$ORIGIN/..;$ORIGIN/lib"
+  BUILD_WITH_INSTALL_RPATH TRUE
+)
 
 include_directories( ${OPENGL_INCLUDE_DIRS})
 
@@ -45,16 +45,16 @@ PUBLIC
 PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/utils/color.cc
 
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/application/application.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/scene/scene.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/object/object.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/object/render_object.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/mesh/mesh.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/mesh/objmesh.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/material/material.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/camera/camera.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/application/application.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/scene/scene.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/object/object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/object/render_object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/mesh/mesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/mesh/objmesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/material/material.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/camera/camera.cc
   
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/glad/glad.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/rendering/glad/glad.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
