@@ -8,7 +8,7 @@ from conan.tools.files import copy, rmdir
 class VivaEngineRecipe(ConanFile):
     name = "viva-engine"
     namespace = "viva"
-    version = "0.0.2"
+    version = "0.1.0"
 
     settings = "os", "compiler", "build_type", "arch"
 
