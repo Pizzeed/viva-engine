@@ -6,9 +6,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-#include <viva/core/rendering/glad/glad.h>
-#include <viva/core/material/material.h>
-#include <viva/core/mesh/mesh.h>
+#include <viva/engine-core/rendering/glad/glad.h>
+#include <viva/engine-core/material/material.h>
+#include <viva/engine-core/mesh/mesh.h>
 #include <viva/utils/types.h>
 
 namespace viva

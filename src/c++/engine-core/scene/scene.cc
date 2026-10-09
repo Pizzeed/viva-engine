@@ -1,8 +1,8 @@
 #include <algorithm>
 
-#include <viva/core/object/object.h>
-#include <viva/core/object/render_object.h>
-#include <viva/core/scene/scene.h>
+#include <viva/engine-core/object/object.h>
+#include <viva/engine-core/object/render_object.h>
+#include <viva/engine-core/scene/scene.h>
 
 namespace viva
 {

@@ -1,7 +1,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-#include <viva/core/camera/camera.h>
+#include <viva/engine-core/camera/camera.h>
 
 namespace viva
 {

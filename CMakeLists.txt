@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.21)
 
 project(
-  viva
-  VERSION 0.0.2
-  DESCRIPTION "Simple OpenGL engine for 3D applications"
+  ${PROJECT_NAME}
+  VERSION ${PROJECT_VERSION}
+  DESCRIPTION ${PROJECT_DESCRIPTION}
   LANGUAGES CXX)
 
 file(CREATE_LINK
@@ -17,7 +17,7 @@ find_package(glm REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_library(${PROJECT_NAME})
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(${PROJECT_NAMESPACE}::engine ALIAS ${PROJECT_NAME})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
   CXX_STANDARD 23
@@ -45,16 +45,16 @@ PUBLIC
 PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/utils/color.cc
 
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/application/application.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/scene/scene.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/object/object.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/object/render_object.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/mesh/mesh.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/mesh/objmesh.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/material/material.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/camera/camera.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/application/application.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/scene/scene.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/object/object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/object/render_object.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/mesh/mesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/mesh/objmesh.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/material/material.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/camera/camera.cc
   
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/core/rendering/glad/glad.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/c++/engine-core/rendering/glad/glad.cc
 )
 
 target_link_libraries(${PROJECT_NAME}

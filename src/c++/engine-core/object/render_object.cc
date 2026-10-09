@@ -1,7 +1,7 @@
-#include <viva/core/rendering/glad/glad.h>
+#include <viva/engine-core/rendering/glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <viva/core/object/render_object.h>
+#include <viva/engine-core/object/render_object.h>
 #include <viva/utils/types.h>
 
 #include <glm/glm.hpp>

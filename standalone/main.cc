@@ -1,15 +1,15 @@
-#include <imgui.h>
-#include <viva/application/application.h>
-#include <viva/glad/glad.h>
-#include <viva/material/material.h>
-#include <viva/mesh/objmesh.h>
-#include <viva/scene/scene.h>
-
 #include <iostream>
 
-// #include "cube.h"
+#include <imgui.h>
+
 #include "bindings/imgui_impl_glfw.h"
 #include "bindings/imgui_impl_opengl3.h"
+
+#include <viva/engine-core/rendering/glad/glad.h>
+#include <viva/engine-core/application/application.h>
+#include <viva/engine-core/material/material.h>
+#include <viva/engine-core/mesh/objmesh.h>
+#include <viva/engine-core/scene/scene.h>
 
 class UI : public viva::RenderObject
 {

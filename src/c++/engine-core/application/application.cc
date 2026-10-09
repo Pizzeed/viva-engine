@@ -2,12 +2,12 @@
 #include <chrono>
 #include <iostream>
 
-#include <viva/core/rendering/glad/glad.h>
+#include <viva/engine-core/rendering/glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <viva/core/application/application.h>
-#include <viva/core/object/render_object.h>
-#include <viva/core/scene/scene.h>
+#include <viva/engine-core/application/application.h>
+#include <viva/engine-core/object/render_object.h>
+#include <viva/engine-core/scene/scene.h>
 #include <viva/utils/color.h>
 
 namespace viva

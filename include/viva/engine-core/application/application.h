@@ -4,8 +4,8 @@
 #include <string>
 
 #include <GLFW/glfw3.h>
-#include <viva/core/camera/camera.h>
-#include <viva/core/object/object.h>
+#include <viva/engine-core/camera/camera.h>
+#include <viva/engine-core/object/object.h>
 #include <viva/utils/types.h>
 
 namespace viva

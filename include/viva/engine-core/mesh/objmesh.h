@@ -6,8 +6,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include <viva/core/material/material.h>
-#include <viva/core/mesh/mesh.h>
+#include <viva/engine-core/material/material.h>
+#include <viva/engine-core/mesh/mesh.h>
 #include <viva/utils/types.h>
 
 namespace viva

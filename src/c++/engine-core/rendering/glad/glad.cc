@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <viva/core/rendering/glad/glad.h>
+#include <viva/engine-core/rendering/glad/glad.h>
 
 static void* get_proc(char const* namez);
 

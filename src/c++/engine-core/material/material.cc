@@ -3,8 +3,8 @@
 #include <iostream>
 #include <sstream>
 
-#include <viva/core/rendering/glad/glad.h>
-#include <viva/core/material/material.h>
+#include <viva/engine-core/rendering/glad/glad.h>
+#include <viva/engine-core/material/material.h>
 
 namespace viva
 {

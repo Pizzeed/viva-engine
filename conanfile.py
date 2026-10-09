@@ -5,8 +5,9 @@ from conan.tools.build import check_min_cppstd
 from conan.tools.files import copy, rmdir
 
 
-class VivaRecipe(ConanFile):
-    name = "viva"
+class VivaEngineRecipe(ConanFile):
+    name = "viva-engine"
+    namespace = "viva"
     version = "0.0.2"
 
     settings = "os", "compiler", "build_type", "arch"
@@ -41,6 +42,9 @@ class VivaRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.cache_variables["BUILD_SHARED_LIBS"] = self.options.shared
         tc.cache_variables["STANDALONE"] = self.options.standalone
+        tc.cache_variables["PROJECT_NAME"] = self.name
+        tc.cache_variables["PROJECT_VERSION"] = self.version
+        tc.cache_variables["PROJECT_NAMESPACE"] = self.namespace
         tc.generate()
         copy(self, "*", os.path.join(self.source_folder, "assets"), os.path.join(self.build_folder, "assets"))
         if self.options.standalone:
@@ -68,9 +72,9 @@ class VivaRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cmake_file_name", "viva")
-        self.cpp_info.set_property("cmake_target_name", "viva::viva")
-        self.cpp_info.libs = ["viva"]
+        self.cpp_info.set_property("cmake_file_name", self.name)
+        self.cpp_info.set_property("cmake_target_name", "viva::engine")
+        self.cpp_info.libs = ["viva-engine"]
         self.cpp_info.requires = ["glfw::glfw", "glm::glm"]
         if self.options.standalone:
             self.cpp_info.requires.append("imgui::imgui")

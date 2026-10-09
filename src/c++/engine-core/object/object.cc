@@ -1,6 +1,6 @@
-#include <viva/core/application/application.h>
-#include <viva/core/object/object.h>
-#include <viva/core/scene/scene.h>
+#include <viva/engine-core/application/application.h>
+#include <viva/engine-core/object/object.h>
+#include <viva/engine-core/scene/scene.h>
 
 namespace viva
 {
