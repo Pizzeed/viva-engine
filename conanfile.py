@@ -74,7 +74,7 @@ class VivaEngineRecipe(ConanFile):
     def package_info(self):
         self.cpp_info.set_property("cmake_file_name", self.name)
         self.cpp_info.set_property("cmake_target_name", "viva::engine")
-        self.cpp_info.libs = ["viva-engine"]
+        self.cpp_info.libs = [self.name]
         self.cpp_info.requires = ["glfw::glfw", "glm::glm"]
         if self.options.standalone:
             self.cpp_info.requires.append("imgui::imgui")
